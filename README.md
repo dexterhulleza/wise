@@ -18,3 +18,17 @@ checklist set by its **document type** before it can move forward.
 > Peso thresholds, signatories, and delegated approval limits are deliberately
 > left as configuration. Take them from the current IRR of RA 12009, GPPB
 > issuances, and the TESDA Delegation of Authority in force.
+
+## Phase 1 user interface (prototype)
+
+Clickable mockup: [`prototype/index.html`](prototype/index.html). Open it with `#dashboard`, `#register`, `#track`, `#monthly`, or `#mobile` at the end of the address.
+
+| My Desk (home) | Register a paper document |
+|---|---|
+| ![My Desk](docs/screenshots/dashboard.png) | ![Register](docs/screenshots/register.png) |
+| **Track a document** | **Monthly accomplishment** |
+| ![Track](docs/screenshots/track.png) | ![Monthly](docs/screenshots/monthly.png) |
+
+**Mobile QR receive / release**
+
+![Mobile](docs/screenshots/mobile.png)

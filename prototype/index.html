@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WISE Prototype</title>
+<style>
+:root{
+  --bg:#f4f6f9; --panel:#ffffff; --ink:#1b2430; --muted:#5d6b7a; --line:#e2e7ee;
+  --brand:#0b3d91; --brand-2:#1456c8; --brand-soft:#e8f0fd;
+  --ok:#1e7d4f; --ok-soft:#e3f4ea; --warn:#a05a00; --warn-soft:#fff2db;
+  --bad:#b42318; --bad-soft:#fde8e6; --info:#0b6aa2; --info-soft:#e2f2fb;
+  --gold:#d4a017;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45}
+a{color:var(--brand-2);text-decoration:none}
+.app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.side{background:var(--brand);color:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:4px}
+.logo{display:flex;align-items:center;gap:10px;padding:4px 8px 18px}
+.logo .mark{width:36px;height:36px;border-radius:9px;background:#fff;color:var(--brand);display:grid;place-items:center;font-weight:800}
+.logo b{font-size:18px;letter-spacing:.5px}.logo small{display:block;opacity:.75;font-size:11px}
+.nav a{display:flex;align-items:center;gap:10px;color:#dce6fb;padding:10px 12px;border-radius:8px;font-weight:500}
+.nav a.on{background:rgba(255,255,255,.16);color:#fff}
+.nav .n{margin-left:auto;background:var(--gold);color:#1b2430;font-size:12px;font-weight:700;border-radius:10px;padding:1px 8px}
+.nav .sec{font-size:11px;text-transform:uppercase;letter-spacing:1px;opacity:.6;padding:16px 12px 4px}
+.ico{width:18px;text-align:center}
+.main{padding:22px 32px 40px}
+.top{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+.top h1{font-size:24px;margin:0}
+.top .sub{color:var(--muted);font-size:14px}
+.search{margin-left:auto;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 14px;width:340px;color:var(--muted)}
+.user{display:flex;align-items:center;gap:10px}
+.av{width:36px;height:36px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:grid;place-items:center;font-weight:700}
+.btn{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;color:var(--ink);padding:10px 16px;border-radius:9px;font-weight:600;font-size:14px;cursor:pointer}
+.btn.primary{background:var(--brand-2);border-color:var(--brand-2);color:#fff}
+.btn.big{padding:14px 22px;font-size:16px}
+.btn.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.grid{display:grid;gap:16px}
+.g4{grid-template-columns:repeat(4,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g2{grid-template-columns:1.6fr 1fr}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.card h2{font-size:16px;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+.card h2 .hint{margin-left:auto;font-weight:500;font-size:13px;color:var(--muted)}
+.kpi{display:flex;flex-direction:column;gap:4px;border-left:5px solid var(--brand-2)}
+.kpi .v{font-size:32px;font-weight:800}
+.kpi .l{font-weight:600}.kpi .d{color:var(--muted);font-size:13px}
+.kpi.bad{border-left-color:var(--bad)}.kpi.bad .v{color:var(--bad)}
+.kpi.warn{border-left-color:var(--warn)}.kpi.warn .v{color:var(--warn)}
+.kpi.ok{border-left-color:var(--ok)}.kpi.ok .v{color:var(--ok)}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr:last-child td{border-bottom:0}
+.mono{font-family:"DejaVu Sans Mono",monospace;font-size:13px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.bad{background:var(--bad-soft);color:var(--bad)}.chip.info{background:var(--info-soft);color:var(--info)}
+.chip.gray{background:#eef1f5;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;display:inline-block}
+.muted{color:var(--muted)}.small{font-size:13px}
+.pipeline{display:flex;gap:6px}
+.pipeline .st{flex:1;background:#f7f9fc;border:1px solid var(--line);border-radius:10px;padding:10px 8px;text-align:center}
+.pipeline .st b{display:block;font-size:22px}.pipeline .st span{font-size:12px;color:var(--muted)}
+.pipeline .st.hot{background:var(--warn-soft);border-color:#f3d39b}
+.bar{height:10px;background:#edf0f4;border-radius:6px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--brand-2);border-radius:6px}
+.bar.ok i{background:var(--ok)}.bar.warn i{background:var(--warn)}.bar.bad i{background:var(--bad)}
+/* stepper */
+.stepper{display:flex;gap:0;margin:6px 0 20px;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.step{flex:1;display:flex;align-items:center;gap:12px;padding:14px 18px;color:var(--muted);border-right:1px solid var(--line)}
+.step:last-child{border-right:0}
+.step .num{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;background:#eef1f5}
+.step.done{color:var(--ok)}.step.done .num{background:var(--ok);color:#fff}
+.step.on{color:var(--brand);background:var(--brand-soft)}.step.on .num{background:var(--brand-2);color:#fff}
+.step b{display:block;color:inherit}.step small{font-size:12px}
+.check{display:flex;align-items:center;gap:14px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+.check .q{flex:1}.check .q small{display:block;color:var(--muted);font-size:12.5px}
+.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;font-size:13px;font-weight:600}
+.seg span{padding:7px 12px;color:var(--muted);border-right:1px solid var(--line)}.seg span:last-child{border-right:0}
+.seg .y{background:var(--ok);color:#fff}.seg .n{background:var(--bad);color:#fff}.seg .na{background:#8a96a5;color:#fff}
+.tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:#eef1f5;color:var(--muted);letter-spacing:.3px}
+.tag.auto{background:var(--info-soft);color:var(--info)}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.field label{font-size:13px;font-weight:600}
+.field .in{border:1px solid var(--line);border-radius:8px;padding:9px 12px;background:#fbfcfd}
+.banner{display:flex;align-items:center;gap:18px;padding:18px 22px;border-radius:14px;background:var(--brand-soft);border:1px solid #c9dafa;margin-bottom:16px}
+.banner .big:not(.btn){font-size:22px;font-weight:800;color:var(--brand)}
+.banner.warn{background:var(--warn-soft);border-color:#f3d39b}
+.timeline{position:relative;padding-left:26px}
+.timeline:before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.ev{position:relative;padding:0 0 16px}
+.ev:before{content:"";position:absolute;left:-23px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--ok);border:3px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.ev.now:before{background:var(--warn)}.ev.next:before{background:#cfd6df}
+.ev b{display:block}.ev .small{color:var(--muted)}
+.chain{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.chain .c{padding:8px 12px;border-radius:9px;border:1px solid var(--line);font-weight:600;font-size:13px;background:#fff}
+.chain .c.done{background:var(--ok-soft);border-color:#b9e0c9;color:var(--ok)}
+.chain .c.cur{background:var(--warn-soft);border-color:#f3d39b;color:var(--warn)}
+.chain .c.todo{color:var(--muted);border-style:dashed}
+.chain .arr{color:#a3adb9}
+.qr{width:112px;height:112px;background:
+ conic-gradient(from 90deg at 30% 30%, #1b2430 25%, transparent 0) 0 0/16px 16px,
+ linear-gradient(45deg,#1b2430 25%,transparent 25%,transparent 75%,#1b2430 75%) 0 0/12px 12px;
+ border:8px solid #fff;outline:1px solid var(--line);border-radius:6px}
+.help{background:#fffbea;border:1px solid #f1e3a6;border-radius:10px;padding:12px 14px;font-size:13.5px;display:flex;gap:10px}
+.drop{border:2px dashed #b8c6da;border-radius:12px;padding:20px;text-align:center;background:#f8fbff;color:var(--muted)}
+.file{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-top:8px;background:#fff}
+.file .pdf{width:34px;height:40px;border-radius:5px;background:var(--bad-soft);color:var(--bad);display:grid;place-items:center;font-size:11px;font-weight:800}
+/* phone */
+.phone-wrap{display:flex;gap:40px;justify-content:center;align-items:flex-start;padding:30px}
+.phone{width:390px;background:#fff;border-radius:38px;border:10px solid #1b2430;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.15)}
+.phone .ph-top{background:var(--brand);color:#fff;padding:18px 20px 16px}
+.phone .ph-body{padding:18px 18px 24px}
+.screen{display:none}.screen.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- ============ SCREEN 1: HOME DASHBOARD ============ -->
+<section class="screen" id="dashboard">
+<div class="app">
+  <aside class="side">
+    <div class="logo"><div class="mark">W</div><div><b>WISE</b><small>WorldSkills Philippines</small></div></div>
+    <nav class="nav">
+      <a class="on"><span class="ico">⌂</span>My Desk<span class="n">5</span></a>
+      <a><span class="ico">＋</span>Register Document</a>
+      <a><span class="ico">⌖</span>Track a Document</a>
+      <a><span class="ico">▤</span>Transaction Folders</a>
+      <div class="sec">Performance</div>
+      <a><span class="ico">✓</span>Monthly Accomplishment</a>
+      <a><span class="ico">◎</span>OPCR / IPCR</a>
+      <div class="sec">Reports</div>
+      <a><span class="ico">▦</span>Dashboards</a>
+      <a><span class="ico">⚙</span>Settings</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div><h1>Good morning, Maria</h1><div class="sub">Budget Unit · Tuesday, 3 November 2026</div></div>
+      <div class="search">⌕ Search tracking no., PR no., supplier…</div>
+      <div class="user"><div class="av">MS</div></div>
+    </div>
+
+    <div class="grid g4" style="margin-bottom:16px">
+      <div class="card kpi"><span class="v">5</span><span class="l">Documents at my desk</span><span class="d">Waiting for your action</span></div>
+      <div class="card kpi bad"><span class="v">2</span><span class="l">Overdue</span><span class="d">Past the processing time limit</span></div>
+      <div class="card kpi warn"><span class="v">3</span><span class="l">Incomplete</span><span class="d">Missing checklist items</span></div>
+      <div class="card kpi ok"><span class="v">4 days</span><span class="l">Monthly report due</span><span class="d">October accomplishment · 2 of 4 MOV uploaded</span></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>Documents waiting at my desk <span class="hint">Oldest first · click a row to open</span></h2>
+      <table>
+        <thead><tr><th>Tracking No.</th><th>Document</th><th>From</th><th>At my desk</th><th>Checklist</th><th>What to do</th><th></th></tr></thead>
+        <tbody>
+          <tr><td class="mono">WSP-2026-000412</td><td><b>Purchase Request</b><br><span class="small muted">Competition tools – Welding (NSC 2026)</span></td><td>Competitions Unit</td><td><span class="chip bad"><span class="dot"></span>5 days · overdue</span></td><td><span class="chip ok">Complete</span></td><td>Certify funds available</td><td><a class="btn primary">Open</a></td></tr>
+          <tr><td class="mono">WSP-2026-000419</td><td><b>Obligation Request (ORS)</b><br><span class="small muted">Venue rental – ASEAN Skills selection</span></td><td>Procurement Unit</td><td><span class="chip bad"><span class="dot"></span>4 days · overdue</span></td><td><span class="chip warn">1 missing</span></td><td>Certify Box B</td><td><a class="btn primary">Open</a></td></tr>
+          <tr><td class="mono">WSP-2026-000431</td><td><b>Travel Order</b><br><span class="small muted">Delegation – WorldSkills Shanghai prep</span></td><td>Secretariat</td><td><span class="chip warn"><span class="dot"></span>2 of 3 days</span></td><td><span class="chip ok">Complete</span></td><td>Earmark funds</td><td><a class="btn primary">Open</a></td></tr>
+          <tr><td class="mono">WSP-2026-000437</td><td><b>Honoraria Payroll</b><br><span class="small muted">Judges – Regional Skills Competition</span></td><td>Secretariat</td><td><span class="chip ok"><span class="dot"></span>1 of 3 days</span></td><td><span class="chip warn">2 missing</span></td><td>Return or certify</td><td><a class="btn primary">Open</a></td></tr>
+          <tr><td class="mono">WSP-2026-000440</td><td><b>Purchase Request</b><br><span class="small muted">Training consumables – Cooking</span></td><td>Competitions Unit</td><td><span class="chip ok"><span class="dot"></span>Today</span></td><td><span class="chip ok">Complete</span></td><td>Certify funds available</td><td><a class="btn primary">Open</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Where all WSP documents are now <span class="hint">By stage · 1 Jan – 3 Nov 2026</span></h2>
+        <div class="pipeline">
+          <div class="st"><b>12</b><span>Request</span></div>
+          <div class="st"><b>7</b><span>Review</span></div>
+          <div class="st hot"><b>15</b><span>Procurement</span></div>
+          <div class="st"><b>6</b><span>Obligation</span></div>
+          <div class="st"><b>9</b><span>Delivery &amp; Inspection</span></div>
+          <div class="st hot"><b>11</b><span>Payment</span></div>
+          <div class="st"><b>143</b><span>Closed</span></div>
+        </div>
+        <p class="small muted" style="margin:12px 0 0">Orange = most documents waiting. Click a stage to see the list.</p>
+      </div>
+      <div class="card">
+        <h2>Office accomplishment – October</h2>
+        <div class="small" style="display:flex;justify-content:space-between"><span>Reports submitted</span><b>9 of 12 staff</b></div>
+        <div class="bar ok" style="margin:6px 0 14px"><i style="width:75%"></i></div>
+        <div class="small" style="display:flex;justify-content:space-between"><span>Outputs with MOV attached</span><b>82%</b></div>
+        <div class="bar warn" style="margin:6px 0 14px"><i style="width:82%"></i></div>
+        <div class="small" style="display:flex;justify-content:space-between"><span>OPCR targets on track</span><b>14 of 17</b></div>
+        <div class="bar" style="margin:6px 0 0"><i style="width:82%"></i></div>
+      </div>
+    </div>
+  </main>
+</div>
+</section>
+
+<!-- ============ SCREEN 2: REGISTER DOCUMENT (CHECKLIST STEP) ============ -->
+<section class="screen" id="register">
+<div class="app">
+  <aside class="side">
+    <div class="logo"><div class="mark">W</div><div><b>WISE</b><small>WorldSkills Philippines</small></div></div>
+    <nav class="nav">
+      <a><span class="ico">⌂</span>My Desk<span class="n">5</span></a>
+      <a class="on"><span class="ico">＋</span>Register Document</a>
+      <a><span class="ico">⌖</span>Track a Document</a>
+      <a><span class="ico">▤</span>Transaction Folders</a>
+      <div class="sec">Performance</div>
+      <a><span class="ico">✓</span>Monthly Accomplishment</a>
+      <a><span class="ico">◎</span>OPCR / IPCR</a>
+      <div class="sec">Reports</div>
+      <a><span class="ico">▦</span>Dashboards</a>
+      <a><span class="ico">⚙</span>Settings</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div><h1>Register a paper document</h1><div class="sub">Scan it, describe it, check it. WISE gives it a tracking number and QR slip.</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">JR</div></div>
+    </div>
+
+    <div class="stepper">
+      <div class="step done"><span class="num">✓</span><div><b>1. Document type</b><small>Purchase Request</small></div></div>
+      <div class="step done"><span class="num">✓</span><div><b>2. Details &amp; scan</b><small>3 pages uploaded</small></div></div>
+      <div class="step on"><span class="num">3</span><div><b>3. Checklist</b><small>Tick what is attached</small></div></div>
+      <div class="step"><span class="num">4</span><div><b>4. Print QR slip</b><small>Attach to paper</small></div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Purchase Request checklist <span class="hint">Version 2026-1 · RA 12009 IRR, COA Circ. 2012-001</span></h2>
+        <div class="check"><span class="tag auto">AUTO</span><div class="q"><b>Cites an approved APP line</b><small>APP 2026 line 34 – Competition tools &amp; equipment (₱1,850,000 remaining)</small></div><span class="chip ok">✓ Passed</span></div>
+        <div class="check"><span class="tag auto">AUTO</span><div class="q"><b>Amount is within the APP line balance</b><small>₱486,500 ≤ ₱1,850,000</small></div><span class="chip ok">✓ Passed</span></div>
+        <div class="check"><span class="tag">CHECK</span><div class="q"><b>Terms of Reference / Technical Specifications attached</b><small>Pages 2–3 of the scan</small></div><div class="seg"><span class="y">Yes</span><span>Missing</span><span>N/A</span></div></div>
+        <div class="check"><span class="tag">CHECK</span><div class="q"><b>ABC computation attached</b><small>Approved Budget for the Contract, based on market scoping</small></div><div class="seg"><span class="y">Yes</span><span>Missing</span><span>N/A</span></div></div>
+        <div class="check" style="border-color:#f5c2bd;background:#fffafa"><span class="tag">CHECK</span><div class="q"><b>Market Scoping Report attached</b><small>At least the required number of price sources</small></div><div class="seg"><span>Yes</span><span class="n">Missing</span><span>N/A</span></div></div>
+        <div class="check"><span class="tag">CHECK</span><div class="q"><b>Signed by the Requesting Officer</b><small>Signature on page 1</small></div><div class="seg"><span class="y">Yes</span><span>Missing</span><span>N/A</span></div></div>
+        <div class="check"><span class="tag">CHECK</span><div class="q"><b>Specifications have no brand names</b><small>Unless allowed under the IRR</small></div><div class="seg"><span class="y">Yes</span><span>Missing</span><span>N/A</span></div></div>
+        <div class="field" style="margin-top:12px"><label>Remarks for the sender (required when something is missing)</label><div class="in">Please attach the Market Scoping Report (3 supplier quotations or PhilGEPS price references).</div></div>
+      </div>
+
+      <div>
+        <div class="card" style="margin-bottom:16px">
+          <h2>Result</h2>
+          <div class="banner warn" style="margin-bottom:12px">
+            <div style="font-size:30px">!</div>
+            <div><div class="big" style="color:var(--warn)">Incomplete – 1 item missing</div><div class="small">The document will still be tracked, but marked <b>Incomplete</b> and the sender will be notified.</div></div>
+          </div>
+          <div style="display:flex;gap:10px">
+            <a class="btn">← Back</a>
+            <a class="btn">Return to sender</a>
+            <a class="btn primary" style="margin-left:auto">Save &amp; print QR slip →</a>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:16px">
+          <h2>Uploaded scan</h2>
+          <div class="file"><div class="pdf">PDF</div><div><b>PR-2026-0412_signed.pdf</b><div class="small muted">3 pages · 1.2 MB · uploaded 9:14 AM</div></div></div>
+        </div>
+        <div class="help"><span>💡</span><div><b>Tip:</b> <span class="tag auto">AUTO</span> items are checked by the system from the details you entered. You only need to confirm the <span class="tag">CHECK</span> items by looking at the paper.</div></div>
+      </div>
+    </div>
+  </main>
+</div>
+</section>
+
+<!-- ============ SCREEN 3: TRACK A DOCUMENT ============ -->
+<section class="screen" id="track">
+<div class="app">
+  <aside class="side">
+    <div class="logo"><div class="mark">W</div><div><b>WISE</b><small>WorldSkills Philippines</small></div></div>
+    <nav class="nav">
+      <a><span class="ico">⌂</span>My Desk<span class="n">5</span></a>
+      <a><span class="ico">＋</span>Register Document</a>
+      <a class="on"><span class="ico">⌖</span>Track a Document</a>
+      <a><span class="ico">▤</span>Transaction Folders</a>
+      <div class="sec">Performance</div>
+      <a><span class="ico">✓</span>Monthly Accomplishment</a>
+      <a><span class="ico">◎</span>OPCR / IPCR</a>
+      <div class="sec">Reports</div>
+      <a><span class="ico">▦</span>Dashboards</a>
+      <a><span class="ico">⚙</span>Settings</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div><div class="sub mono">WSP-2026-000412</div><h1>Purchase Request – Competition tools, Welding (NSC 2026)</h1><div class="sub">PR No. 2026-10-0187 · ₱486,500.00 · PAP: WorldSkills Participation Program · Registered 28 Oct 2026</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">MS</div></div>
+    </div>
+
+    <div class="banner">
+      <div style="font-size:34px">📍</div>
+      <div style="flex:1"><div class="small muted">WHERE IS IT NOW?</div><div class="big">Budget Unit – with Maria Santos</div><div class="small">Received 28 Oct, 2:10 PM · waiting for: <b>Certification of funds available</b></div></div>
+      <div style="text-align:right"><span class="chip bad" style="font-size:14px;padding:6px 14px"><span class="dot"></span>5 working days · limit is 3</span><div class="small muted" style="margin-top:6px">Overdue by 2 days</div></div>
+      <a class="btn primary big">Take action</a>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>Transaction chain <span class="hint">All documents for this purchase, in order</span></h2>
+      <div class="chain">
+        <span class="c done">✓ APP line 34</span><span class="arr">→</span>
+        <span class="c cur">● Purchase Request</span><span class="arr">→</span>
+        <span class="c todo">RFQ / Bidding</span><span class="arr">→</span>
+        <span class="c todo">Notice of Award</span><span class="arr">→</span>
+        <span class="c todo">ORS + CAF</span><span class="arr">→</span>
+        <span class="c todo">Purchase Order</span><span class="arr">→</span>
+        <span class="c todo">Inspection (IAR)</span><span class="arr">→</span>
+        <span class="c todo">Disbursement Voucher</span><span class="arr">→</span>
+        <span class="c todo">Payment</span>
+      </div>
+      <p class="small muted" style="margin:10px 0 0">Green = done · Orange = in progress · Dashed = not yet started</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <h2>Route history</h2>
+        <div class="timeline">
+          <div class="ev"><b>Prepared &amp; signed</b><span class="small">Competitions Unit – R. Dela Cruz · 27 Oct, 4:30 PM</span></div>
+          <div class="ev"><b>Registered, checklist done</b><span class="small">Secretariat – J. Reyes · 28 Oct, 9:14 AM</span><br><span class="chip ok" style="margin-top:4px">Complete</span></div>
+          <div class="ev"><b>Received</b><span class="small">Procurement Unit – APP line verified · 28 Oct, 11:02 AM</span></div>
+          <div class="ev now"><b>Received – now here</b><span class="small">Budget Unit – M. Santos · 28 Oct, 2:10 PM</span></div>
+          <div class="ev next"><b>Next: Approval</b><span class="small">Office of the Executive Director</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>Scanned versions</h2>
+        <div class="file"><div class="pdf">PDF</div><div><b>v2 – APP line verified</b><div class="small muted">28 Oct · Procurement Unit</div></div></div>
+        <div class="file"><div class="pdf">PDF</div><div><b>v1 – Signed by requester</b><div class="small muted">28 Oct · Secretariat</div></div></div>
+        <div class="drop" style="margin-top:12px">Signed it? <b>Upload the new scan</b><br><span class="small">Drag a PDF here or click to choose</span></div>
+      </div>
+      <div class="card">
+        <h2>Checklist &amp; QR</h2>
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:12px">
+          <div class="qr"></div>
+          <div class="small"><b>QR routing slip</b><br>Attached to the paper.<br>Scan to receive or release.<br><a>Reprint slip</a></div>
+        </div>
+        <div class="small" style="display:flex;justify-content:space-between"><span>Checklist items</span><b>7 of 7 complete</b></div>
+        <div class="bar ok" style="margin:6px 0 10px"><i style="width:100%"></i></div>
+        <a class="small">View checklist →</a>
+      </div>
+    </div>
+  </main>
+</div>
+</section>
+
+<!-- ============ SCREEN 4: MONTHLY ACCOMPLISHMENT ============ -->
+<section class="screen" id="monthly">
+<div class="app">
+  <aside class="side">
+    <div class="logo"><div class="mark">W</div><div><b>WISE</b><small>WorldSkills Philippines</small></div></div>
+    <nav class="nav">
+      <a><span class="ico">⌂</span>My Desk<span class="n">5</span></a>
+      <a><span class="ico">＋</span>Register Document</a>
+      <a><span class="ico">⌖</span>Track a Document</a>
+      <a><span class="ico">▤</span>Transaction Folders</a>
+      <div class="sec">Performance</div>
+      <a class="on"><span class="ico">✓</span>Monthly Accomplishment</a>
+      <a><span class="ico">◎</span>OPCR / IPCR</a>
+      <div class="sec">Reports</div>
+      <a><span class="ico">▦</span>Dashboards</a>
+      <a><span class="ico">⚙</span>Settings</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <div><h1>My October 2026 accomplishment</h1><div class="sub">Rafael Dela Cruz · Competitions Unit · IPCR Jul–Dec 2026 · Supervisor: A. Mendoza</div></div>
+      <div class="user" style="margin-left:auto;gap:12px"><span class="chip warn"><span class="dot"></span>Draft · due 6 Nov</span><a class="btn primary">Submit to supervisor</a></div>
+    </div>
+
+    <div class="stepper">
+      <div class="step done"><span class="num">✓</span><div><b>1. Targets set</b><small>From your approved IPCR</small></div></div>
+      <div class="step on"><span class="num">2</span><div><b>2. Enter this month's outputs</b><small>Add proof (MOV) for each</small></div></div>
+      <div class="step"><span class="num">3</span><div><b>3. Supervisor confirms</b><small>Rolls up to OPCR</small></div></div>
+      <div class="step"><span class="num">4</span><div><b>4. Semestral rating</b><small>December 2026</small></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>My targets and this month's outputs <span class="hint">Each output needs at least one proof (MOV)</span></h2>
+      <table>
+        <thead><tr><th style="width:30%">IPCR success indicator</th><th>Linked OPCR target</th><th>Semester target</th><th>October output</th><th style="width:16%">Progress so far</th><th>Proof (MOV)</th></tr></thead>
+        <tbody>
+          <tr><td><b>Regional skills competitions conducted</b><br><span class="small muted">with complete post-activity reports</span></td><td class="small">OPCR 2.1 – Competitions held</td><td>4</td><td><b>1</b> <span class="small muted">(Region VII)</span></td><td><div class="small">3 of 4</div><div class="bar ok"><i style="width:75%"></i></div></td><td><span class="chip ok">✓ 2 files</span></td></tr>
+          <tr><td><b>Competitor training plans approved</b><br><span class="small muted">within 10 days of selection</span></td><td class="small">OPCR 3.2 – Delegation readiness</td><td>12</td><td><b>4</b></td><td><div class="small">9 of 12</div><div class="bar ok"><i style="width:75%"></i></div></td><td><span class="chip ok">✓ 4 files</span></td></tr>
+          <tr><td><b>Purchase requests for competition needs submitted</b><br><span class="small muted">complete on first submission</span></td><td class="small">OPCR 2.3 – Timely procurement</td><td>10</td><td><b>2</b></td><td><div class="small">5 of 10</div><div class="bar warn"><i style="width:50%"></i></div></td><td><span class="chip info">↗ Linked: WSP-2026-000412, 000440</span></td></tr>
+          <tr style="background:#fffafa"><td><b>Expert and judge orientation sessions held</b></td><td class="small">OPCR 2.2 – Experts trained</td><td>3</td><td><b>1</b></td><td><div class="small">1 of 3</div><div class="bar bad"><i style="width:33%"></i></div></td><td><span class="chip bad">Missing – add proof</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h2>Add proof for "Expert and judge orientation sessions held"</h2>
+        <div class="drop">📎 <b>Drop files here</b> or click to upload<br><span class="small">Attendance sheet, photos, report, certificate · PDF, JPG, PNG</span></div>
+        <p class="small muted" style="margin:10px 0 0">Or link a document already tracked in WISE (e.g., an Office Order or Honoraria Payroll).</p>
+      </div>
+      <div class="help" style="align-self:start"><span>💡</span><div><b>How this is used:</b> your monthly outputs are added up automatically. In December, WISE prepares the "Actual Accomplishment" column of your IPCR and of the office OPCR, with all proof attached, so nothing has to be encoded again.</div></div>
+    </div>
+  </main>
+</div>
+</section>
+
+<!-- ============ SCREEN 5: MOBILE QR RECEIVE ============ -->
+<section class="screen" id="mobile">
+<div class="phone-wrap">
+  <div class="phone">
+    <div class="ph-top"><div class="small" style="opacity:.8">WISE · Scan result</div><div style="font-size:20px;font-weight:800">Document found</div></div>
+    <div class="ph-body">
+      <div class="mono small muted">WSP-2026-000419</div>
+      <div style="font-size:18px;font-weight:700;margin:2px 0 4px">Obligation Request (ORS)</div>
+      <div class="small muted">Venue rental – ASEAN Skills selection · ₱312,000.00</div>
+      <div style="margin:12px 0"><span class="chip warn">1 checklist item missing</span></div>
+      <div class="card" style="padding:12px 14px;margin-bottom:12px">
+        <div class="small muted">FROM</div><b>Procurement Unit – L. Garcia</b>
+        <div class="small muted" style="margin-top:8px">TO</div><b>Budget Unit – you</b>
+      </div>
+      <a class="btn ok big" style="width:100%;justify-content:center;margin-bottom:10px">✓ Receive document</a>
+      <a class="btn big" style="width:100%;justify-content:center;margin-bottom:10px">↩ Return – not complete</a>
+      <a class="btn" style="width:100%;justify-content:center">📷 Upload new scan</a>
+      <p class="small muted" style="text-align:center;margin:14px 0 0">Receiving starts the 3-day processing clock for your desk.</p>
+    </div>
+  </div>
+  <div class="phone">
+    <div class="ph-top"><div class="small" style="opacity:.8">WISE · Release</div><div style="font-size:20px;font-weight:800">Send to next desk</div></div>
+    <div class="ph-body">
+      <div class="mono small muted">WSP-2026-000419</div>
+      <div style="font-size:18px;font-weight:700;margin:2px 0 12px">Obligation Request (ORS)</div>
+      <div class="field"><label>What did you do?</label><div class="in">Certified Box B – allotment available</div></div>
+      <div class="field"><label>Send to</label><div class="in">Accounting Unit – Chief Accountant ▾</div></div>
+      <div class="field"><label>Signed scan</label><div class="file" style="margin-top:0"><div class="pdf">PDF</div><div><b>ORS_signed_v2.pdf</b><div class="small muted">2 pages · just now</div></div></div></div>
+      <a class="btn primary big" style="width:100%;justify-content:center;margin-top:6px">Release →</a>
+    </div>
+  </div>
+</div>
+</section>
+
+<script>
+const id=(location.hash||'#dashboard').slice(1);
+(document.getElementById(id)||document.getElementById('dashboard')).classList.add('show');
+</script>
+</body>
+</html>
