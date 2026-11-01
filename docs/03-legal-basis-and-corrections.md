@@ -1,0 +1,47 @@
+# Legal Basis and Corrections to the Reference Flow
+
+## 1. Governing framework (verify the latest versions before go-live)
+
+| Area | Primary basis | Notes for WISE |
+|---|---|---|
+| Procurement | **RA 12009 – New Government Procurement Act (2024)** and its **IRR**; GPPB resolutions and circulars | RA 9184 is repealed. RA 12009 brings in or strengthens **market scoping**, **e-procurement through the modernized PhilGEPS**, new procurement modes (e.g., Competitive Dialogue, Direct Acquisition, Direct Sales, Unsolicited Offer with Bid Matching, Direct Procurement for STI), **Most Economically Advantageous Responsive Bid (MEARB)**, sustainable/green procurement, and professionalization of procurement practitioners. **Keep the peso thresholds per mode in config, sourced from the current IRR annexes.** |
+| Common-use supplies | RA 12009 + IRR provisions on CSE; PS-DBM guidelines; DBM circulars on APP-CSE | APP-CSE is still prepared and submitted through the PS-DBM Virtual Store. Check how far buying CSE from PS-DBM is mandatory under the current IRR (RA 12009 relaxed it in some cases). |
+| Early procurement | RA 12009 IRR provisions on Early Procurement Activities (EPA); GPPB issuances | EPA can run up to the point before award, pending the GAA. Award only after the GAA takes effect and the allotment is released. |
+| Budget execution | Annual **GAA** General Provisions; **DBM National Budget Circulars** on budget execution and release (e.g., GAA-as-allotment-order policy); DBM-COA joint circulars on Budget Accountability Reports | The PAP structure follows **PREXC** (Program Expenditure Classification), with accounts coded in **UACS**. |
+| Obligation/accounting | **PD 1445 (Government Auditing Code)**, Secs. 85–87; **Government Accounting Manual (GAM) for NGAs** (COA Circular 2015-007) | **ORS** for regular agency funds; **BURS** where the GAM prescribes it (e.g., certain trust/special funds). No contract or PO may be signed without the Budget certification on the ORS (allotment) and the **Chief Accountant's Certificate of Availability of Funds (CAF)** (PD 1445 Sec. 86–87). |
+| Documentary requirements | **COA Circular 2012-001** (Revised Guidelines and Documentary Requirements for Common Government Transactions), as amended | The base checklist for every DV type in `02-document-checklists.md`. |
+| Contracts to COA | **COA Circular 2009-001**, as amended | Send copies of perfected contracts/POs and their supporting documents to the Audit Team within the period it prescribes (5 working days). |
+| Cash advances | **COA Circular 97-002**, as amended; COA rules on special/ travel cash advances | Liquidation deadlines differ by type (e.g., local vs. foreign travel). WISE blocks a new CA while an earlier one is still unliquidated. |
+| Travel | **EO 77, s. 2019** (rates and rules for official local and foreign travel); OP/DBM rules on foreign travel authority | Foreign travel by WSP delegations (ASEAN Skills, WorldSkills Competition) needs travel authority at the level the current issuances require. |
+| Property | GAM property forms; **COA Circular 2022-004** (capitalization threshold of **₱50,000**) | Items ≥ ₱50,000 → **PAR** (PPE). Items below → **ICS** (semi-expendable). Supplies issued → **RIS**. |
+| Taxes / invoices | NIRC as amended by **RA 11976 – Ease of Paying Taxes Act** | From 2024 the **invoice** (not the official receipt) is the primary evidence for sales of goods *and* services. Checklists should ask for invoices. |
+| Performance management | **CSC MC No. 6, s. 2012 – Strategic Performance Management System (SPMS)** and later CSC issuances; TESDA's CSC-approved SPMS | Cascade: **OPCR → DPCR → IPCR**. Rating periods are usually semestral. |
+| Performance-Based Bonus | AO 25 s. 2011 and the yearly IATF Memorandum Circulars | Several PBB conditions come straight from WISE outputs (APP, PMR, BARs, Transparency Seal, SPMS ratings). |
+| Gender & Development | **RA 9710 (Magna Carta of Women)**; PCW-NEDA-DBM JC 2012-01 | GAD Plan & Budget (at least 5% of total budget) is tagged at the PAP/WFP level. |
+| Ease of doing business | **RA 11032** (EODB/ARTA Act); Citizen's Charter | Processing-time SLAs: simple 3, complex 7, highly technical 20 working days. |
+| Internal control / audit | DBM **National Guidelines on Internal Control Systems**; **Philippine Government Internal Audit Manual**; COA **Rules and Regulations on the Settlement of Accounts** (RRSA) | Audit observation memoranda (AOMs), Notices of Suspension/Disallowance/Charge are tracked until settled. |
+| E-documents / e-signatures | **RA 8792 (E-Commerce Act)**; DICT **PNPKI** digital certificates; COA issuances on electronic documents | Use PNPKI digital signatures. **Keep wet-signed originals for any document COA has not confirmed it accepts electronically.** |
+| Records | **RA 9470 (National Archives Act)**; NAP General Records Disposition Schedule | Each document type has a retention period and a disposal rule. |
+| Data privacy | **RA 10173 (Data Privacy Act)** and NPC circulars | Competitor/expert personal data (passports, minors' data, medical) needs a PIA, consent, and access controls. |
+| Cloud / ICT | DICT **Cloud First Policy** (DC 2017-002, as amended); DICT ISSP requirements | Host on GovCloud or an accredited CSP. The system must appear in TESDA's ISSP. |
+| Transparency | **EO 2, s. 2016 (FOI)**; GAA Transparency Seal provision | Publishes APP, PMR, and award notices from WISE. |
+
+## 2. Corrections and refinements to the reference 10-stage flow
+
+| # | Reference flow | Issue | Correction applied in WISE |
+|---|---|---|---|
+| 01 | OPCR → PAP → IPCR → WFP → PPMP | **Order is reversed.** Budget-side PAPs (from the NEP/GAA, PREXC-coded) drive the office's targets, not the other way round. The **DPCR** layer is missing. **PPMP** is a procurement-planning document. | Split into **Stage 0 Budget Preparation** (Tier 1/Tier 2 proposal with an **Indicative PPMP**) and **Stage 1 Performance & Financial Planning**: PAP (GAA) → **WFP / Financial Plan** → **OPCR → DPCR → IPCR**. Physical targets in the OPCR must equal the PAP/BED physical targets. |
+| 02 | Market Scoping → PPMP Consolidation → APP / APP-CSE | Mostly correct. Under RA 12009 market scoping feeds both the **ABC** and the specifications. The Indicative → Final PPMP/APP cycle is missing. Approval by the **HoPE** and posting on PhilGEPS are missing. | Indicative PPMP/APP (with the budget proposal) → Final PPMP/APP (after GAA) → HoPE approval → PhilGEPS/website posting → APP-CSE to PS-DBM. **Supplemental/updated APP** route added. |
+| 03 | PR → TOR/Specs → Supporting docs | The TOR/specs and ABC are inputs to the PR, not things that come after it. | Market scoping report + TOR/Technical Specs + ABC computation are prepared **with** the PR. The PR is blocked unless it cites an **APP line item**. |
+| 04 | Completeness → Plan & Budget → Approval | Correct in principle. | Kept. Adds **fund earmarking** (pre-obligation availability check) so the funds cannot be committed twice while procurement is running. |
+| 05 | Solicitation → Evaluation → Award → PO/Contract | **PO/Contract is placed before obligation.** Under PD 1445 Sec. 86–87 a contract cannot be perfected until funds are certified. Mode determination, the BAC resolution, and PhilGEPS posting are missing. | Stage 5 ends at **Notice of Award**. The **ORS + CAF** (Stage 6) must be certified **before** PO/contract signing. Then comes the **Notice to Proceed**. |
+| 06 | ORS → Official obligation recording | Placed too late (see above). | Moved ahead of contract perfection. **BURS** added where applicable. COA copy of the contract (COA Circ. 2009-001) added. |
+| 07 | Delivery → Inspection → Acceptance | Property recording (PAR/ICS/RIS, stock/property cards) and liquidated damages for late delivery are missing. | **IAR** (inspection by the Inspection Committee, acceptance by the Supply/Property Officer) → PAR/ICS → property cards. Late-delivery liquidated damages are computed automatically. |
+| 08 | Billing → DV → Accounting → Approval → Payment | Withholding tax, retention money, and the payment instrument are missing. | DV (GAM form) with the COA 2012-001 checklist → Accounting certification (Box C) → Approval (Box D) → **LDDAP-ADA** (MDS) or check → BIR withholding (Form 2307 issued). Retention/warranty security tracked. |
+| 09 | Accomplishment → MOV → OPCR/IPCR → Financial reconciliation | Correct, but the external reports are missing. | Adds DBM-COA **BARs/FARs**, the GPPB **Procurement Monitoring Report**, PBB evidence, and Budget–Accounting reconciliation of obligations vs. disbursements. |
+| 10 | Liquidation → Records → Audit → Closure | Liquidation belongs to the cash-advance track and can happen at any stage. Post-audit settlement is missing. | Liquidation runs in the **non-procurement track** with deadlines enforced. Closure = final payment + warranty-period expiry + release of retention/securities + COA settlement (AOM/ND cleared) + records disposition schedule. |
+| — | (absent) | **About half of WSP spending is not procurement:** delegation travel, WSI membership fees, honoraria for experts/judges, competitor allowances, cash advances. | A separate **Non-Procurement Disbursement Track** with its own document types and checklists. |
+
+> Anything marked "verify" in the checklists, and all thresholds, must be
+> confirmed by TESDA Legal/BAC Secretariat against the current issuances
+> before the checklist versions are activated.

@@ -1,0 +1,290 @@
+# WISE document-type registry (draft v0.1)
+# Phase 1 uses: code, name, category, phase1_metadata, checklist (mode: flag).
+# Phase 3 and later also use: prerequisites, auto_validations, signatories, gates (mode: enforce).
+# Thresholds and signatories marked TBD must come from the current RA 12009 IRR
+# and the TESDA Delegation of Authority before activation.
+
+version: 0.1
+effective_date: TBD
+checklist_mode: flag   # flag (Phase 1-2) | enforce (Phase 3+)
+
+common_checklist:
+  - { id: C01, text: "Document type correctly identified; reference no. and date legible", type: manual }
+  - { id: C02, text: "All pages scanned, readable, in order", type: manual }
+  - { id: C03, text: "Signatures present for current stage; no unauthenticated erasures", type: manual }
+  - { id: C04, text: "Sensitive personal data flagged for restricted access", type: manual }
+
+sla_classes:          # RA 11032, working days
+  simple: 3
+  complex: 7
+  highly_technical: 20
+
+document_types:
+
+  # ---------- Planning & performance ----------
+  - code: WFP
+    name: Work and Financial Plan
+    category: planning
+    phase1_metadata: [fy, fund_source, pap, total_amount]
+    checklist:
+      - { id: WFP01, text: "Total per PAP equals allotment", type: auto }
+      - { id: WFP02, text: "Physical targets match BED Physical Plan / OPCR", type: manual }
+      - { id: WFP03, text: "GAD activities tagged", type: manual }
+    signatories: [secretariat_prepared, planning_reviewed, budget_reviewed, head_of_office_approved]
+
+  - code: OPCR
+    name: Office Performance Commitment and Review
+    category: performance
+    phase1_metadata: [fy, semester, office]
+    checklist:
+      - { id: OP01, text: "Each success indicator linked to a PAP", type: auto }
+      - { id: OP02, text: "Targets have Q/E/T measures per SPMS", type: manual }
+    signatories: [head_of_office, pmt_review, head_of_agency_or_delegate]
+
+  - code: IPCR
+    name: Individual Performance Commitment and Review
+    category: performance
+    phase1_metadata: [fy, semester, employee, office]
+    checklist:
+      - { id: IP01, text: "Each success indicator linked to a DPCR/OPCR indicator", type: auto }
+      - { id: IP02, text: "MOV defined per indicator", type: manual }
+    signatories: [ratee, immediate_supervisor, head_of_office]
+
+  - code: MAR
+    name: Monthly Accomplishment Report
+    category: performance
+    phase1_metadata: [month, employee, ipcr_indicators]
+    checklist:
+      - { id: MAR01, text: "Linked to IPCR indicator(s)", type: auto }
+      - { id: MAR02, text: "At least one MOV per reported output", type: auto }
+      - { id: MAR03, text: "Output consistent with MOV", type: manual }
+    signatories: [staff, immediate_supervisor]
+    sla_class: simple
+
+  # ---------- Procurement planning ----------
+  - code: MSR
+    name: Market Scoping Report
+    category: procurement_planning
+    phase1_metadata: [date, item_or_project, estimated_cost]
+    checklist:
+      - { id: MS01, text: "Minimum number of sources per IRR (TBD)", type: manual }
+      - { id: MS02, text: "Prices comparable for same specifications and within validity", type: manual }
+
+  - code: PPMP
+    name: Project Procurement Management Plan
+    category: procurement_planning
+    phase1_metadata: [fy, ppmp_type, office, pap, total_amount]
+    checklist:
+      - { id: PP01, text: "Each line has UACS code, qty, cost, mode, schedule, WFP line", type: auto }
+      - { id: PP02, text: "Total <= WFP amount for same PAP/object code", type: auto, gate: G1 }
+      - { id: PP03, text: "Market scoping attached", type: manual }
+    signatories: [end_user, head_of_office, budget_reviewed]
+
+  - code: APP
+    name: Annual Procurement Plan
+    category: procurement_planning
+    phase1_metadata: [fy, app_type, total_amount]
+    checklist:
+      - { id: AP01, text: "Consolidates approved PPMPs; totals match", type: auto }
+      - { id: AP02, text: "Approved by HoPE and posted on PhilGEPS/website", type: manual }
+    signatories: [bac_secretariat, bac, hope]
+
+  - code: APPCSE
+    name: APP for Common-Use Supplies and Equipment
+    category: procurement_planning
+    phase1_metadata: [fy, total_amount]
+    checklist:
+      - { id: AC01, text: "Current PS-DBM template used; submitted via Virtual Store by deadline", type: manual }
+
+  # ---------- Request & procurement ----------
+  - code: PR
+    name: Purchase Request
+    category: request
+    phase1_metadata: [pr_no, date, office, pap, app_line_ref, total_amount]
+    prerequisites: [APP]
+    attachments: [TOR_OR_SPECS, ABC_COMPUTATION, MSR]
+    checklist:
+      - { id: PR01, text: "Cites an approved APP line", type: auto, gate: G2 }
+      - { id: PR02, text: "Total <= remaining APP line balance", type: auto, gate: G2 }
+      - { id: PR03, text: "Purpose consistent with PPMP/APP entry", type: manual }
+      - { id: PR04, text: "TOR/specs, ABC computation, market scoping attached", type: manual }
+    signatories: [end_user_requested, budget_funds_earmarked, approving_official_per_doa]
+    sla_class: simple
+
+  - code: TOR
+    name: Terms of Reference / Technical Specifications
+    category: request
+    phase1_metadata: [title, office]
+    checklist:
+      - { id: TR01, text: "No brand names unless allowed by IRR", type: manual }
+      - { id: TR02, text: "Scope, deliverables, schedule, warranty, qualifications stated", type: manual }
+      - { id: TR03, text: "Evaluation criteria stated where applicable", type: manual }
+
+  - code: RFQ
+    name: Request for Quotation / Invitation to Bid
+    category: procurement
+    phase1_metadata: [ref_no, pr_ref, mode, abc, philgeps_ref]
+    prerequisites: [PR]
+    checklist:
+      - { id: RQ01, text: "Mode justified per RA 12009 IRR", type: manual }
+      - { id: RQ02, text: "PhilGEPS posting reference and period met", type: manual }
+
+  - code: ABSTRACT
+    name: Abstract of Quotations / Bids
+    category: procurement
+    phase1_metadata: [ref_no, rfq_ref]
+    prerequisites: [RFQ]
+    checklist:
+      - { id: AB01, text: "All responding suppliers listed; computations correct", type: manual }
+      - { id: AB02, text: "Spec compliance checked per bidder", type: manual }
+
+  - code: BACRES
+    name: BAC Resolution
+    category: procurement
+    phase1_metadata: [reso_no, date, subject]
+    checklist:
+      - { id: BR01, text: "Quorum met; basis of recommendation stated", type: manual }
+    signatories: [bac_chair, bac_members, hope_approved]
+
+  - code: NOA
+    name: Notice of Award
+    category: procurement
+    phase1_metadata: [ref_no, supplier, amount]
+    prerequisites: [BACRES]
+    checklist:
+      - { id: NA01, text: "Amount <= ABC", type: auto, gate: G6 }
+      - { id: NA02, text: "Conformed by bidder; posted as required", type: manual }
+
+  # ---------- Budget ----------
+  - code: ORS
+    name: Obligation Request and Status (or BURS)
+    category: budget
+    phase1_metadata: [ors_no, payee, pap, uacs, amount]
+    checklist:
+      - { id: OR01, text: "Amount <= unobligated allotment", type: auto, gate: G3 }
+      - { id: OR02, text: "Box A certified by requesting head", type: manual }
+      - { id: OR03, text: "Box B certified by Budget Officer", type: manual }
+    signatories: [requesting_head_box_a, budget_officer_box_b]
+    sla_class: simple
+
+  - code: CAF
+    name: Certificate of Availability of Funds
+    category: budget
+    phase1_metadata: [ref_no, amount]
+    checklist:
+      - { id: CF01, text: "Signed by Chief Accountant before contract/PO signing", type: manual, gate: G5 }
+
+  # ---------- Contract & implementation ----------
+  - code: PO
+    name: Purchase Order / Contract
+    category: contract
+    phase1_metadata: [po_no, supplier, amount, date_signed]
+    prerequisites: [NOA, ORS, CAF]
+    checklist:
+      - { id: PO01, text: "ORS and CAF certified before signing date", type: auto, gate: G5 }
+      - { id: PO02, text: "Amount equals NOA amount", type: auto }
+      - { id: PO03, text: "Performance security posted", type: manual }
+      - { id: PO04, text: "Copy sent to COA Audit Team within required period", type: manual }
+    signatories: [hope_or_authorized, supplier_conforme]
+
+  - code: IAR
+    name: Inspection and Acceptance Report
+    category: implementation
+    phase1_metadata: [iar_no, po_ref, invoice_no, delivery_date]
+    prerequisites: [PO]
+    checklist:
+      - { id: IA01, text: "Inspection by Inspection Committee completed", type: manual, gate: G7 }
+      - { id: IA02, text: "Acceptance by Supply/Property Officer completed", type: manual, gate: G7 }
+      - { id: IA03, text: "Liquidated damages computed if late", type: auto }
+    signatories: [inspection_committee, supply_property_officer]
+
+  - code: PAR_ICS
+    name: Property Acknowledgment Receipt / Inventory Custodian Slip
+    category: property
+    phase1_metadata: [ref_no, accountable_officer, unit_cost]
+    prerequisites: [IAR]
+    checklist:
+      - { id: PI01, text: "PAR if unit cost >= 50000, else ICS", type: auto, gate: G11 }
+      - { id: PI02, text: "Accountable officer signed; property no. assigned", type: manual }
+
+  # ---------- Payment ----------
+  - code: DV
+    name: Disbursement Voucher
+    category: payment
+    phase1_metadata: [dv_no, payee, ors_ref, gross_amount, net_amount]
+    prerequisites: [ORS]
+    variants:
+      procured_goods_services:
+        prerequisites: [PO, IAR]
+        attachments: [PO, NOA, BACRES, ABSTRACT, ORS, IAR, DELIVERY_RECEIPT, INVOICE]
+      travel:
+        prerequisites: [TRAVEL_ORDER]
+      honoraria:
+        prerequisites: [HONORARIA_PAYROLL]
+    checklist:
+      - { id: DV01, text: "Amount <= obligation balance", type: auto, gate: G8 }
+      - { id: DV02, text: "Attachments per COA Circ. 2012-001 for the variant", type: manual }
+      - { id: DV03, text: "Withholding tax and retention computed", type: manual }
+      - { id: DV04, text: "Preparer is not the certifier/approver", type: auto, gate: G12 }
+    signatories: [box_a_requesting_head, box_c_chief_accountant, box_d_approving_official]
+    sla_class: complex
+
+  # ---------- Non-procurement (WSP operations) ----------
+  - code: TRAVEL_ORDER
+    name: Travel Order / Travel Authority
+    category: wsp_operations
+    phase1_metadata: [to_no, traveler, destination, dates, local_or_foreign, estimated_cost]
+    checklist:
+      - { id: TO01, text: "Foreign travel authority from proper approving level", type: manual }
+      - { id: TO02, text: "Rates per EO 77 s. 2019", type: manual }
+
+  - code: CASH_ADVANCE
+    name: Cash Advance Request
+    category: wsp_operations
+    phase1_metadata: [ca_no, officer, purpose, amount, liquidation_due]
+    checklist:
+      - { id: CA01, text: "No overdue unliquidated cash advance", type: auto, gate: G9 }
+      - { id: CA02, text: "Officer designated/bonded as SDO where required", type: manual }
+
+  - code: LIQUIDATION
+    name: Liquidation Report
+    category: wsp_operations
+    phase1_metadata: [lr_no, ca_ref, amount_liquidated, refund]
+    prerequisites: [CASH_ADVANCE]
+    checklist:
+      - { id: LQ01, text: "Filed within required period (local/foreign differ; TBD)", type: auto }
+      - { id: LQ02, text: "Invoices/receipts, Certificate of Travel Completed, tickets attached", type: manual }
+
+  - code: HONORARIA_PAYROLL
+    name: Honoraria Payroll
+    category: wsp_operations
+    phase1_metadata: [ref_no, activity, total_amount]
+    checklist:
+      - { id: HO01, text: "Office order/designation and legal basis attached", type: manual }
+      - { id: HO02, text: "Rates per current DBM circular (TBD)", type: manual }
+      - { id: HO03, text: "Proof of attendance/output attached", type: manual }
+
+  - code: WSI_FEE
+    name: WorldSkills International / Asia Fee
+    category: wsp_operations
+    phase1_metadata: [invoice_no, organization, currency, amount_fx, amount_php]
+    checklist:
+      - { id: WF01, text: "Membership basis and WSI invoice attached", type: manual }
+      - { id: WF02, text: "FX computation per Accounting rules", type: manual }
+
+  # ---------- Monitoring & closure ----------
+  - code: PMR
+    name: Procurement Monitoring Report
+    category: monitoring
+    phase1_metadata: [period]
+    checklist:
+      - { id: PM01, text: "GPPB format; submitted and posted by deadline", type: manual }
+
+  - code: CLOSURE
+    name: Project Completion / Closure Report
+    category: closure
+    phase1_metadata: [transaction_folder]
+    checklist:
+      - { id: CL01, text: "All DVs paid; warranty ended; retention and securities released", type: auto }
+      - { id: CL02, text: "No open AOM/NS/ND", type: manual }
+      - { id: CL03, text: "Records indexed per Records Disposition Schedule", type: manual }
