@@ -30,6 +30,8 @@ Clickable mockup: [`prototype/index.html`](prototype/index.html). Open it with `
 | **Track a document** | **Monthly accomplishment** |
 | ![Track](docs/screenshots/track.png) | ![Monthly](docs/screenshots/monthly.png) |
 
+**Proposed-change screens** (item request flow review): `#request`, `#procure`, `#failed`, `#cse`, `#iar`, `#dv`. See [`docs/05-item-request-flow-review.md`](docs/05-item-request-flow-review.md#4-user-interface-for-the-proposed-changes).
+
 **Mobile QR receive / release**
 
 ![Mobile](docs/screenshots/mobile.png)

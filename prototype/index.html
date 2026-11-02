@@ -112,6 +112,37 @@ tr:last-child td{border-bottom:0}
 .phone .ph-top{background:var(--brand);color:#fff;padding:18px 20px 16px}
 .phone .ph-body{padding:18px 18px 24px}
 .screen{display:none}.screen.show{display:block}
+
+/* ---- added for proposed-change screens ---- */
+.flow{display:flex;align-items:stretch;gap:0;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.flow .f{flex:1;padding:12px 10px;border-right:1px solid var(--line);text-align:center;font-size:12.5px;color:var(--muted);position:relative}
+.flow .f:last-child{border-right:0}
+.flow .f b{display:block;font-size:13px;color:var(--ink);margin-top:4px}
+.flow .f .s{width:26px;height:26px;border-radius:50%;margin:0 auto;display:grid;place-items:center;font-weight:700;background:#eef1f5;color:var(--muted);font-size:13px}
+.flow .f.done .s{background:var(--ok);color:#fff}.flow .f.done b{color:var(--ok)}
+.flow .f.cur{background:var(--warn-soft)}.flow .f.cur .s{background:var(--warn);color:#fff}.flow .f.cur b{color:var(--warn)}
+.flow .f.lock{background:#f6f7f9}.flow .f.lock .s{background:#5d6b7a;color:#fff}
+.flow .f.new:after{content:"NEW";position:absolute;top:6px;right:6px;font-size:9.5px;font-weight:800;color:#fff;background:var(--brand-2);border-radius:4px;padding:1px 5px}
+.gate{display:flex;gap:16px;align-items:flex-start;border:2px solid #5d6b7a;background:#f6f7f9;border-radius:14px;padding:16px 20px;margin-bottom:16px}
+.gate .lk{font-size:30px;line-height:1}
+.gate h3{margin:0 0 4px;font-size:18px}
+.opt{border:2px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff}
+.opt.sel{border-color:var(--brand-2);background:var(--brand-soft)}
+.opt h3{margin:4px 0 6px;font-size:16px}
+.opt .radio{width:20px;height:20px;border-radius:50%;border:2px solid #a3adb9;display:inline-block;vertical-align:middle}
+.opt.sel .radio{border:6px solid var(--brand-2)}
+.why{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--brand);background:var(--brand-soft);border:1px solid #c9dafa;border-radius:6px;padding:2px 8px}
+.route{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;background:#fff}
+.route h3{margin:0 0 6px;font-size:15px;display:flex;align-items:center;gap:8px}
+.route ul{margin:6px 0 0;padding-left:18px;font-size:13.5px}
+.route li{margin-bottom:4px}
+.num-r{text-align:right;font-variant-numeric:tabular-nums}
+.sum td{padding:8px 10px}
+.sum tr.tot td{font-weight:800;font-size:16px;border-top:2px solid var(--ink)}
+.box{display:flex;gap:10px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px}
+.box .bl{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;font-weight:800;background:#eef1f5}
+.box.done .bl{background:var(--ok);color:#fff}.box.cur .bl{background:var(--brand-2);color:#fff}
+.legend-new{font-size:12.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
 </style>
 </head>
 <body>
@@ -427,7 +458,298 @@ tr:last-child td{border-bottom:0}
 </div>
 </section>
 
+
+<!-- ============ NEW A: ITEM REQUEST — STOCK CHECK & ROUTING ============ -->
+<section class="screen" id="request">
+<div class="app">
+  <aside class="side" data-on="req"></aside>
+  <main class="main">
+    <div class="top">
+      <div><h1>New item request</h1><div class="sub">IR-2026-0221 · Competitions Unit · Welding workshop set-up, NSC 2026</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">RD</div></div>
+    </div>
+    <div class="stepper">
+      <div class="step done"><span class="num">✓</span><div><b>1. Items &amp; specifications</b><small>5 items</small></div></div>
+      <div class="step on"><span class="num">2</span><div><b>2. Stock &amp; plan check</b><small>WISE checks PSD stock and the APP</small></div></div>
+      <div class="step"><span class="num">3</span><div><b>3. Submit</b><small>One request, routed automatically</small></div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>What WISE found for each item <span class="hint">You don't need to decide the route – WISE does it from stock, APP and unit cost</span></h2>
+      <table>
+        <thead><tr><th>Item</th><th>Need</th><th>In PSD stock</th><th>Issue from stock</th><th>To procure</th><th>Type (by unit cost)</th><th>Route</th></tr></thead>
+        <tbody>
+          <tr><td><b>Welding electrodes E6013, 1 kg</b></td><td>40</td><td>40</td><td><b>40</b></td><td>—</td><td><span class="chip gray">Consumable</span></td><td><span class="chip ok">Stock → RIS</span></td></tr>
+          <tr style="background:#fffdf5"><td><b>Welding helmet, auto-darkening</b><br><span class="small muted">₱4,800 / unit</span></td><td>12</td><td>5</td><td><b>5</b></td><td><b>7</b></td><td><span class="chip gray">Semi-expendable</span></td><td><span class="chip ok">5 → RIS + ICS</span> <span class="chip info">7 → PR</span></td></tr>
+          <tr><td><b>Inverter welding machine 200A</b><br><span class="small muted">₱62,000 / unit</span></td><td>4</td><td>0</td><td>—</td><td><b>4</b></td><td><span class="chip gray">PPE (≥ ₱50,000)</span></td><td><span class="chip info">PR (APP line 34)</span></td></tr>
+          <tr><td><b>Bond paper A4, 70gsm</b></td><td>20 rm</td><td>0</td><td>—</td><td><b>20</b></td><td><span class="chip gray">Consumable · CSE</span></td><td><span class="chip info">PS-DBM → APR</span></td></tr>
+          <tr style="background:#fffafa"><td><b>Portable fume extractor</b><br><span class="small muted">₱38,500 / unit</span></td><td>2</td><td>0</td><td>—</td><td><b>2</b></td><td><span class="chip gray">Semi-expendable</span></td><td><span class="chip bad">Not in APP</span></td></tr>
+        </tbody>
+      </table>
+      <p class="small muted" style="margin:10px 0 0">Partial stock is no longer a dead end: available units are issued now, and the balance goes to procurement automatically. <span class="why">Fix F8</span></p>
+    </div>
+
+    <div class="grid g3">
+      <div class="route"><h3><span class="chip ok">1</span> Issue from PSD stock</h3>
+        <ul><li>RIS for 40 electrodes + 5 helmets</li><li>ICS for the 5 helmets (semi-expendable)</li><li>PSD records quantity and recipient</li></ul></div>
+      <div class="route"><h3><span class="chip info">2</span> Procure</h3>
+        <ul><li><b>PR</b>: 7 helmets + 4 welding machines (APP line 34)</li><li><b>PS-DBM APR</b>: 20 reams bond paper (CSE)</li><li>Market scoping, TOR/specs and ABC required <span class="why">F4</span></li></ul></div>
+      <div class="route" style="border-color:#f5c2bd"><h3><span class="chip bad">3</span> Needs plan amendment</h3>
+        <ul><li>Fume extractor is not in the APP</li><li>Supplemental PPMP/APP → <b>Budget confirms funds</b> → <b>HoPE approves</b> → posted <span class="why">F5</span></li><li>If not approved: <b>deferred</b> (request ends, you're notified)</li></ul></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:6px"><a class="btn">← Back</a><a class="btn primary big">Submit request – create 3 routes</a></div>
+  </main>
+</div>
+</section>
+
+<!-- ============ NEW B: PROCUREMENT TRACKER WITH ORS/CAF GATE ============ -->
+<section class="screen" id="procure">
+<div class="app">
+  <aside class="side" data-on="track"></aside>
+  <main class="main">
+    <div class="top">
+      <div><div class="sub mono">WSP-2026-000412</div><h1>Welding tools for NSC 2026 – procurement</h1><div class="sub">PR 2026-10-0187 · ABC ₱486,500.00 · Contract ₱281,600.00 · Supplier: Metro Weld Supply</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">LG</div></div>
+    </div>
+
+    <div class="flow">
+      <div class="f done"><div class="s">✓</div><b>PR approved</b>funds earmarked</div>
+      <div class="f done"><div class="s">✓</div><b>Procurement</b>BAC method</div>
+      <div class="f done"><div class="s">✓</div><b>Notice of Award</b>conformed</div>
+      <div class="f cur new"><div class="s">4</div><b>ORS</b>Budget · Box B</div>
+      <div class="f new"><div class="s">5</div><b>CAF</b>Chief Accountant</div>
+      <div class="f lock"><div class="s">🔒</div><b>PO / Contract</b>locked</div>
+      <div class="f"><div class="s">7</div><b>NTP</b>+ COA copy</div>
+      <div class="f"><div class="s">8</div><b>Delivery &amp; IAR</b></div>
+      <div class="f"><div class="s">9</div><b>DV &amp; Payment</b></div>
+      <div class="f"><div class="s">10</div><b>Closure</b>after warranty</div>
+    </div>
+
+    <div class="gate">
+      <div class="lk">🔒</div>
+      <div style="flex:1"><h3>The Purchase Order can't be signed yet</h3>
+        <div>Funds must be obligated <b>before</b> the PO or contract is signed. Waiting for: <b>ORS certified by Budget (Box B)</b> and <b>CAF signed by the Chief Accountant</b>.</div>
+        <div class="small muted" style="margin-top:6px">Basis: PD 1445, Secs. 86–87 · <span class="why">Fix F1 – ORS was previously after the PO</span></div></div>
+      <a class="btn primary">Remind Budget Unit</a>
+    </div>
+
+    <div class="grid g3">
+      <div class="card"><h2>Request documents <span class="why">F3 · F4</span></h2>
+        <div class="box done"><div class="bl">✓</div><div><b>Market Scoping Report</b><div class="small muted">4 sources incl. PhilGEPS</div></div></div>
+        <div class="box done"><div class="bl">✓</div><div><b>TOR / Technical Specs</b></div></div>
+        <div class="box done"><div class="bl">✓</div><div><b>ABC computation</b><div class="small muted">₱486,500.00</div></div></div>
+        <div class="box done"><div class="bl">✓</div><div><b>Funds earmarked by Budget</b><div class="small muted">29 Oct · before PR approval</div></div></div>
+      </div>
+      <div class="card"><h2>Award documents <span class="why">F9</span></h2>
+        <div class="box done"><div class="bl">✓</div><div><b>Abstract / evaluation report</b></div></div>
+        <div class="box done"><div class="bl">✓</div><div><b>BAC Resolution recommending award</b></div></div>
+        <div class="box done"><div class="bl">✓</div><div><b>Notice of Award</b><div class="small muted">Conformed 30 Oct · PhilGEPS posted</div></div></div>
+        <div class="box"><div class="bl">…</div><div><b>Performance security</b><div class="small muted">Due within the period set by the IRR</div></div></div>
+      </div>
+      <div class="card"><h2>Obligation – now in progress</h2>
+        <div class="box cur"><div class="bl">B</div><div style="flex:1"><b>ORS – Box B (Budget)</b><div class="small muted">With M. Santos · 1 of 3 days</div></div><span class="chip warn">Pending</span></div>
+        <div class="box"><div class="bl">C</div><div style="flex:1"><b>CAF – Chief Accountant</b><div class="small muted">Starts after ORS</div></div><span class="chip gray">Next</span></div>
+        <div class="box"><div class="bl">🔒</div><div style="flex:1"><b>PO / Contract</b><div class="small muted">Unlocks when B and C are done</div></div><span class="chip gray">Locked</span></div>
+      </div>
+    </div>
+    <p class="legend-new" style="margin-top:12px"><span class="chip info" style="padding:1px 6px;font-size:10px">NEW</span> steps added by the proposed changes</p>
+  </main>
+</div>
+</section>
+
+<!-- ============ NEW C: FAILED PROCUREMENT — CLEAR EXITS ============ -->
+<section class="screen" id="failed">
+<div class="app">
+  <aside class="side" data-on="track"></aside>
+  <main class="main">
+    <div class="top">
+      <div><div class="sub mono">WSP-2026-000398</div><h1>Competition uniforms – procurement failed</h1><div class="sub">PR 2026-09-0144 · ABC ₱275,000.00 · Attempt 1 of the procurement</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">LG</div></div>
+    </div>
+
+    <div class="banner warn">
+      <div style="font-size:30px">!</div>
+      <div style="flex:1"><div class="big" style="color:var(--warn)">No responsive quotation received</div><div class="small">Choose what happens next. The request can't stay in a loop – every path either restarts the procurement properly or ends the request. <span class="why">Fix F6 · F7</span></div></div>
+    </div>
+
+    <div class="grid g2" style="grid-template-columns:1fr 1.4fr">
+      <div class="card"><h2>Before choosing, complete these</h2>
+        <div class="check"><span class="tag">STEP 1</span><div class="q"><b>BAC Resolution declaring failure</b><small>Upload the signed scan</small></div><span class="chip ok">✓ Uploaded</span></div>
+        <div class="check"><span class="tag">STEP 2</span><div class="q"><b>Review specifications</b><small>Too restrictive? Brand-specific?</small></div><span class="chip ok">✓ Revised</span></div>
+        <div class="check"><span class="tag">STEP 3</span><div class="q"><b>Review ABC against new market scoping</b><small>Is the budget still realistic?</small></div><span class="chip warn">In progress</span></div>
+        <h2 style="margin-top:16px">Attempt history</h2>
+        <div class="timeline">
+          <div class="ev"><b>RFQ posted on PhilGEPS</b><span class="small">12 Oct · 7 days</span></div>
+          <div class="ev now"><b>Failed – no responsive quotation</b><span class="small">20 Oct · BAC Res. 2026-118</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="opt sel" style="margin-bottom:12px"><span class="radio"></span> <span class="chip info">Recommended</span>
+          <h3>Re-procure with revised specs / ABC</h3><div class="small">Goes back to the BAC with the same mode. The earmark stays in place.</div></div>
+        <div class="opt" style="margin-bottom:12px"><span class="radio"></span>
+          <h3>Use an alternative method allowed by RA 12009 IRR</h3><div class="small">e.g., negotiated procurement where the IRR allows it after failure. BAC Resolution with justification required. <span class="muted">(Conditions per current IRR – verify.)</span></div></div>
+        <div class="opt" style="margin-bottom:16px"><span class="radio"></span>
+          <h3>Cancel or defer the requirement</h3><div class="small">Ends the request. <b>Earmarked funds are released</b> back to the allotment and the end-user is notified.</div></div>
+        <div style="display:flex;justify-content:flex-end;gap:10px"><a class="btn">Save draft</a><a class="btn primary big">Confirm next step →</a></div>
+      </div>
+    </div>
+  </main>
+</div>
+</section>
+
+<!-- ============ NEW D: CSE / PS-DBM ROUTE ============ -->
+<section class="screen" id="cse">
+<div class="app">
+  <aside class="side" data-on="track"></aside>
+  <main class="main">
+    <div class="top">
+      <div><div class="sub mono">WSP-2026-000455</div><h1>Bond paper A4 – common-use supplies (CSE)</h1><div class="sub">20 reams · APP-CSE 2026, Q4 · Source: PS-DBM Virtual Store</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">JP</div></div>
+    </div>
+
+    <div class="flow">
+      <div class="f done"><div class="s">✓</div><b>In APP-CSE</b>Q4 quantity</div>
+      <div class="f done"><div class="s">✓</div><b>Available at PS-DBM?</b>Yes</div>
+      <div class="f done new"><div class="s">✓</div><b>ORS</b>Budget · Box B</div>
+      <div class="f cur new"><div class="s">4</div><b>Fund transfer</b>to PS-DBM</div>
+      <div class="f lock new"><div class="s">🔒</div><b>APR</b>Agency Procurement Request</div>
+      <div class="f"><div class="s">6</div><b>Delivery</b></div>
+      <div class="f"><div class="s">7</div><b>IAR</b></div>
+      <div class="f"><div class="s">8</div><b>Stock card / RIS</b></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card"><h2>Why this route is different <span class="why">Fix F2</span></h2>
+        <p style="margin-top:0">CSE bought from PS-DBM does <b>not</b> go through BAC award or a Purchase Order. The order is the <b>Agency Procurement Request (APR)</b>, and PS-DBM needs the funds <b>first</b>.</p>
+        <table class="sum">
+          <tr><td>ORS-101-2026-11-0089</td><td><span class="chip ok">Certified 2 Nov</span></td></tr>
+          <tr><td>Fund transfer to PS-DBM</td><td><span class="chip warn">Awaiting Accounting / Cashier</span></td></tr>
+          <tr><td>APR in Virtual Store</td><td><span class="chip gray">🔒 Unlocks after transfer</span></td></tr>
+        </table>
+      </div>
+      <div class="card"><h2>Not available at PS-DBM?</h2>
+        <p class="small" style="margin-top:0">If PS-DBM can't supply the item, upload its <b>certificate of non-availability</b> (or the clearance the current rules require). WISE then moves the item to the regular route:</p>
+        <div class="chain" style="margin-bottom:12px"><span class="c">Certificate</span><span class="arr">→</span><span class="c">Market scoping + specs + ABC</span><span class="arr">→</span><span class="c">PR</span><span class="arr">→</span><span class="c">BAC</span></div>
+        <div class="drop">📎 Upload certificate of non-availability</div>
+      </div>
+    </div>
+  </main>
+</div>
+</section>
+
+<!-- ============ NEW E: INSPECTION & CLASSIFICATION AT RECEIPT ============ -->
+<section class="screen" id="iar">
+<div class="app">
+  <aside class="side" data-on="track"></aside>
+  <main class="main">
+    <div class="top">
+      <div><div class="sub mono">WSP-2026-000412 · IAR-2026-11-0061</div><h1>Inspection and acceptance – Welding tools</h1><div class="sub">PO 2026-11-0102 · Invoice 004512 · Delivered 16 Nov 2026 · Due 12 Nov 2026</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">EV</div></div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px">
+      <h2>1. Inspect each line <span class="hint">Partial acceptance is allowed – rejected units go back to the supplier <span class="why">F10</span></span></h2>
+      <table>
+        <thead><tr><th>Item</th><th>Ordered</th><th>Delivered</th><th>Accepted</th><th>Rejected</th><th>Unit cost</th><th>Classified as <span class="why">F11 · F12</span></th><th>PSD records on</th><th>Issue with</th></tr></thead>
+        <tbody>
+          <tr><td><b>Inverter welding machine 200A</b></td><td>4</td><td>4</td><td><b>4</b></td><td>0</td><td class="num-r">₱62,000.00</td><td><span class="chip info">PPE (≥ ₱50,000)</span></td><td>PPE Property Card</td><td><b>PAR</b></td></tr>
+          <tr style="background:#fffafa"><td><b>Welding helmet, auto-darkening</b></td><td>7</td><td>7</td><td><b>6</b></td><td><span class="chip bad">1 – cracked lens</span></td><td class="num-r">₱4,800.00</td><td><span class="chip info">Semi-expendable</span></td><td>Semi-Expendable Property Card</td><td><b>ICS</b></td></tr>
+        </tbody>
+      </table>
+      <p class="small muted" style="margin:10px 0 0">Classification is set <b>now, on receipt</b>, from the unit cost (COA Circ. 2022-004). PSD posts to the right card before anything is issued.</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="card"><h2>2. Late delivery</h2>
+        <table class="sum">
+          <tr><td>Due date</td><td class="num-r">12 Nov 2026</td></tr>
+          <tr><td>Delivered</td><td class="num-r">16 Nov 2026</td></tr>
+          <tr><td>Days late</td><td class="num-r"><b>4</b></td></tr>
+          <tr><td>Liquidated damages</td><td class="num-r"><b>₱1,107.20</b></td></tr>
+        </table>
+        <p class="small muted" style="margin:6px 0 0">Computed automatically at the rate in the contract/IRR and sent to the DV for deduction.</p>
+      </div>
+      <div class="card"><h2>3. Sign-off</h2>
+        <div class="box done"><div class="bl">✓</div><div><b>Inspected</b><div class="small muted">Inspection Committee · 16 Nov</div></div></div>
+        <div class="box cur"><div class="bl">✍</div><div style="flex:1"><b>Accepted</b><div class="small muted">Supply/Property Officer</div></div><a class="btn ok">Accept</a></div>
+      </div>
+      <div class="card"><h2>4. After acceptance</h2>
+        <div class="route" style="margin-bottom:8px"><b>Issue to end-user now?</b>
+          <ul><li><b>Yes</b> → PAR for 4 machines, ICS for 6 helmets; end-user signs = acknowledgment <span class="why">F13</span></li><li><b>No</b> → stored by PSD; later issued through an RIS</li></ul></div>
+        <div class="small muted">The IAR is also sent to Accounting for the DV.</div>
+      </div>
+    </div>
+  </main>
+</div>
+</section>
+
+<!-- ============ NEW F: DV WITH DEDUCTIONS, RETURN ROUTING, CLOSURE ============ -->
+<section class="screen" id="dv">
+<div class="app">
+  <aside class="side" data-on="track"></aside>
+  <main class="main">
+    <div class="top">
+      <div><div class="sub mono">WSP-2026-000412 · DV-2026-11-0233</div><h1>Disbursement voucher – Metro Weld Supply</h1><div class="sub">PO 2026-11-0102 · ORS-101-2026-11-0071 · IAR-2026-11-0061 (partial: 1 helmet rejected)</div></div>
+      <div class="user" style="margin-left:auto"><div class="av">CA</div></div>
+    </div>
+
+    <div class="stepper">
+      <div class="step done"><span class="num">A</span><div><b>Box A – Requesting head</b><small>Certified 18 Nov</small></div></div>
+      <div class="step on"><span class="num">C</span><div><b>Box C – Chief Accountant</b><small>Review now</small></div></div>
+      <div class="step"><span class="num">D</span><div><b>Box D – Approving Official</b><small>Next</small></div></div>
+      <div class="step"><span class="num">₱</span><div><b>Payment</b><small>LDDAP-ADA / check</small></div></div>
+    </div>
+
+    <div class="grid g3">
+      <div class="card"><h2>Attachments (COA Circ. 2012-001)</h2>
+        <div class="small muted" style="margin-bottom:8px">Pulled automatically from the transaction folder</div>
+        <div class="box done"><div class="bl">✓</div><b>ORS · PO · NOA · NTP</b></div>
+        <div class="box done"><div class="bl">✓</div><b>BAC Res. · Abstract · PhilGEPS</b></div>
+        <div class="box done"><div class="bl">✓</div><b>IAR · Delivery receipt</b></div>
+        <div class="box done"><div class="bl">✓</div><b>Supplier invoice</b></div>
+        <div class="box done"><div class="bl">✓</div><b>Performance security</b></div>
+      </div>
+      <div class="card"><h2>Amount due <span class="why">F14</span></h2>
+        <table class="sum">
+          <tr><td>Accepted: 4 machines + 6 helmets</td><td class="num-r">₱276,800.00</td></tr>
+          <tr><td class="muted">Less: final VAT withheld</td><td class="num-r muted">(12,357.14)</td></tr>
+          <tr><td class="muted">Less: expanded withholding tax</td><td class="num-r muted">(2,471.43)</td></tr>
+          <tr><td class="muted">Less: liquidated damages</td><td class="num-r muted">(1,107.20)</td></tr>
+          <tr><td class="muted">Less: retention (warranty)</td><td class="num-r muted">(2,768.00)</td></tr>
+          <tr class="tot"><td>Net payment</td><td class="num-r">₱258,096.23</td></tr>
+        </table>
+        <p class="small muted" style="margin:8px 0 0">Tax and retention rates per current BIR rules and the RA 12009 IRR (verify). BIR 2307 issued to the supplier.</p>
+      </div>
+      <div class="card"><h2>Something wrong? Return it</h2>
+        <div class="field"><label>Return to <span class="why">F17</span></label><div class="in">PSD – Supply/Property Officer ▾</div></div>
+        <div class="field"><label>Reason code</label><div class="in">R-07 · IAR quantity doesn't match invoice ▾</div></div>
+        <div class="small muted" style="margin-bottom:10px">Returns go to the unit that can fix the problem – not always the supplier – and the reason is counted in reports.</div>
+        <div style="display:flex;gap:8px"><a class="btn">Return</a><a class="btn primary" style="margin-left:auto">Certify Box C →</a></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>After payment – closure checklist <span class="why">F16</span> <span class="hint">The transaction closes only when every step is done</span></h2>
+      <div class="flow" style="margin:0">
+        <div class="f"><div class="s">1</div><b>LDDAP-ADA / check</b>Cashier</div>
+        <div class="f"><div class="s">2</div><b>JEV recorded</b>Accounting</div>
+        <div class="f"><div class="s">3</div><b>Paid DV to COA</b>with Report of ADA/Checks</div>
+        <div class="f"><div class="s">4</div><b>Warranty period</b>until 16 Nov 2027</div>
+        <div class="f"><div class="s">5</div><b>Release retention</b>&amp; securities</div>
+        <div class="f"><div class="s">6</div><b>Reconcile</b>budget · accounting · property</div>
+        <div class="f"><div class="s">✓</div><b>Closed</b></div>
+      </div>
+    </div>
+  </main>
+</div>
+</section>
 <script>
+const NAV=[['desk','⌂','My Desk','5'],['req','＋','New Item Request'],['reg','⇪','Register Document'],['track','⌖','Track a Document'],['fold','▤','Transaction Folders'],['sec','Performance'],['mon','✓','Monthly Accomplishment'],['op','◎','OPCR / IPCR'],['sec','Reports'],['dash','▦','Dashboards'],['set','⚙','Settings']];
+document.querySelectorAll('.side[data-on]').forEach(el=>{
+  const on=el.dataset.on;
+  el.innerHTML='<div class="logo"><div class="mark">W</div><div><b>WISE</b><small>WorldSkills Philippines</small></div></div><nav class="nav">'+
+  NAV.map(n=>n[0]==='sec'?`<div class="sec">${n[1]}</div>`:`<a class="${n[0]===on?'on':''}"><span class="ico">${n[1]}</span>${n[2]}${n[3]?`<span class="n">${n[3]}</span>`:''}</a>`).join('')+'</nav>';
+});
 const id=(location.hash||'#dashboard').slice(1);
 (document.getElementById(id)||document.getElementById('dashboard')).classList.add('show');
 </script>

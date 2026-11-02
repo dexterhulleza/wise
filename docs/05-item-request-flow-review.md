@@ -143,3 +143,16 @@ A rendered copy is in [`screenshots/item-request-flow-corrected.png`](screenshot
 | IAR → property cards → RIS/ICS/PAR | `IAR`, `PAR_ICS` (gate G11) | 1 / 3 |
 | DV → LDDAP-ADA | `DV` (gates G7, G8, G12) | 1 / 4 |
 | Retention release, reconciliation | `CLOSURE` | 1 / 5 |
+
+## 4. User interface for the proposed changes
+
+Prototype: [`../prototype/index.html`](../prototype/index.html). Add `#request`, `#procure`, `#failed`, `#cse`, `#iar`, or `#dv` to the end of the address. Blue "F" tags on each screen point to the findings above.
+
+| Screen | Shows fixes |
+|---|---|
+| ![New item request](screenshots/change-request.png) **New item request – stock & plan check** | F4, F5, F8: WISE splits one request into stock issue, procurement (PR or PS-DBM APR), and plan amendment |
+| ![Procurement tracker](screenshots/change-procure.png) **Procurement tracker** | F1, F3, F4, F9: ORS + CAF before PO, with the PO locked until both are certified |
+| ![Failed procurement](screenshots/change-failed.png) **Failed procurement** | F6, F7: BAC resolution, spec/ABC review, then re-procure / alternative method / cancel |
+| ![CSE route](screenshots/change-cse.png) **CSE / PS-DBM route** | F2: ORS → fund transfer → APR, plus the non-availability branch |
+| ![Inspection](screenshots/change-iar.png) **Inspection & acceptance** | F10–F13: partial acceptance, liquidated damages, classification on receipt |
+| ![DV](screenshots/change-dv.png) **Disbursement voucher** | F14–F17: Box A/C/D, deductions, return with reason code, closure checklist |
