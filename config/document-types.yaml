@@ -207,6 +207,25 @@ document_types:
       - { id: PI01, text: "PAR if unit cost >= 50000, else ICS", type: auto, gate: G11 }
       - { id: PI02, text: "Accountable officer signed; property no. assigned", type: manual }
 
+  - code: RIS
+    name: Requisition and Issue Slip
+    category: property
+    phase1_metadata: [ris_no, office, items, purpose]
+    checklist:
+      - { id: RI01, text: "Requested by end-user and approved", type: manual }
+      - { id: RI02, text: "Stock availability confirmed; balance routed to procurement if short", type: manual }
+      - { id: RI03, text: "Issued quantity and recipient recorded", type: manual }
+    signatories: [requested_by, approved_by, issued_by_psd, received_by]
+
+  - code: APR
+    name: Agency Procurement Request (PS-DBM)
+    category: procurement
+    phase1_metadata: [apr_no, total_amount, ors_ref]
+    prerequisites: [APPCSE, ORS]
+    checklist:
+      - { id: AR01, text: "Item is in the APP-CSE", type: manual }
+      - { id: AR02, text: "ORS certified and funds transferred/deposited to PS-DBM before APR", type: manual, gate: G5 }
+
   # ---------- Payment ----------
   - code: DV
     name: Disbursement Voucher

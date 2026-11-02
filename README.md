@@ -11,6 +11,7 @@ checklist set by its **document type** before it can move forward.
 | [`docs/02-document-checklists.md`](docs/02-document-checklists.md) | Checklists for each document type (required fields, attachments, prior documents, signatories) |
 | [`docs/03-legal-basis-and-corrections.md`](docs/03-legal-basis-and-corrections.md) | Legal and regulatory references, and where the reference flow was corrected |
 | [`docs/04-development-phases.md`](docs/04-development-phases.md) | Development phases (Phase 1: document tracking, scanned uploads, monitoring) |
+| [`docs/05-item-request-flow-review.md`](docs/05-item-request-flow-review.md) | Review and corrected version of the item request → stock/procurement → property → payment flowchart |
 | [`config/document-types.yaml`](config/document-types.yaml) | Machine-readable checklist and routing definitions for the workflow engine |
 
 > **Status:** draft proposal for validation by the WSP Secretariat, TESDA
